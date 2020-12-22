@@ -32,25 +32,15 @@ namespace History.Api.Controllers
        public string Get()
         {
             
-            //MOVE THESE TO PAGE SCRAPER
-            var url = "https://en.wikipedia.org/wiki/April_7";
-            var web = new HtmlAgilityPack.HtmlWeb();
-            var doc = web.Load(url);
-
-            var xpathEvents = doc.DocumentNode.SelectNodes("//div[@class='mw-parser-output']/ul[position() =1]/li");
-
-            var xpathBirths = doc.DocumentNode.SelectNodes("//div[@class='mw-parser-output']/ul[position() =2]/li");
-
-            var xpathDeaths = doc.DocumentNode.SelectNodes("//div[@class='mw-parser-output']/ul[position() =3]/li");
            // MOVE THESE TO SEPARAte` coNTROLLERS
             List<Event> events = new List<Event>();
-            events = _scraper.GetData<Event>(xpathEvents);
+            events = _scraper.GetData<Event>("April 7");
 
             List<Death> deaths = new List<Death>();
-            deaths = _scraper.GetData<Death>(xpathDeaths);
+            deaths = _scraper.GetData<Death>("April 8");
 
-            List<Birth> births = new List<Birth>();
-            births = _scraper.GetData<Birth>(xpathBirths);
+            List <Birth> births = new List<Birth>();
+            births = _scraper.GetData<Birth>("April 9");
 
             JsonSerializerOptions jso = new JsonSerializerOptions();
             jso.Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping;

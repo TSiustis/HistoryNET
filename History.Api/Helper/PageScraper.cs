@@ -10,9 +10,14 @@ namespace History.Api.Helper
 {
     public class PageScraper
     {
-        public List<T> GetData<T>(HtmlNodeCollection xpathEvents) where T: BaseModel, new()    
+        public List<T> GetData<T>(string Day) where T: BaseModel, new()    
         {
 
+
+            var url = "https://en.wikipedia.org/wiki/" + Day;
+            var web = new HtmlAgilityPack.HtmlWeb();
+            var doc = web.Load(url);
+            var xpathEvents = doc.DocumentNode.SelectNodes("//div[@class='mw-parser-output']/ul[position() =1]/li");
             var titles = new List<string>();
             var anchors = new List<string>();
             List<T> events = new List<T>();
@@ -22,7 +27,7 @@ namespace History.Api.Helper
                 List<Link> links = new List<Link>();
 
 
-                ev.Html = node.InnerHtml;
+                ev.Html = HttpUtility.HtmlDecode(node.InnerHtml);
                 try
                 {
                     ev.Content = HttpUtility.HtmlDecode(node.InnerText).Split(" – ")[1];

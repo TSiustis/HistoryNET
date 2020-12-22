@@ -32,7 +32,6 @@ namespace History.Api.Controllers
        public string Get()
         {
             
-           // MOVE THESE TO SEPARAte` coNTROLLERS
             List<Event> events = new List<Event>();
             events = _scraper.GetData<Event>("April 7");
 

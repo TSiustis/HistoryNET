@@ -37,15 +37,23 @@ namespace History.Api.Helper
                 {
                     //on some pages the split separator is different for the last list item so we will ignore it for now
                 }
+                try
+                {
+                    foreach (var nodeA in node.SelectNodes("/" + node.XPath + "/a[@href]"))
+                        if (!nodeA.GetAttributeValue("href", string.Empty).Replace("/wiki/", "").All(Char.IsDigit))
+                            anchors.Add("https://en.wikipedia.org" + nodeA.GetAttributeValue("href", string.Empty));
+                }
+                catch (NullReferenceException) { }
+                try
+                {
+                    foreach (var nodeB in node.SelectNodes("/" + node.XPath + "/a[@title]"))
+                        if (!nodeB.GetAttributeValue("title", string.Empty).All(Char.IsDigit))
+                            titles.Add(nodeB.GetAttributeValue("title", string.Empty));
+                }
+                catch (NullReferenceException)
+                {
 
-                foreach (var nodeA in node.SelectNodes("/" + node.XPath + "/a[@href]"))
-                    if (!nodeA.GetAttributeValue("href", string.Empty).Replace("/wiki/", "").All(Char.IsDigit))
-                        anchors.Add("https://en.wikipedia.org" + nodeA.GetAttributeValue("href", string.Empty));
-
-                foreach (var nodeB in node.SelectNodes("/" + node.XPath + "/a[@title]"))
-                    if (!nodeB.GetAttributeValue("title", string.Empty).All(Char.IsDigit))
-                        titles.Add(nodeB.GetAttributeValue("title", string.Empty));
-
+                }
                 for (int i = 0; i < titles.Count; i++)
                 {
                     Link link = new Link

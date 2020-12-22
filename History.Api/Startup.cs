@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using History.Api.Data;
+using History.Api.Helper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -50,6 +51,7 @@ namespace History.Api
             {
                 endpoints.MapControllers();
             });
+            ScrapeData.Scrape(app);
         }
     }
 }

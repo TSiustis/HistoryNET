@@ -10,22 +10,28 @@ namespace History.Api.Helper
 {
     public class PageScraper
     {
-        public List<Event> GetEvents(HtmlNodeCollection xpathEvents)
+        public List<T> GetData<T>(HtmlNodeCollection xpathEvents) where T: BaseModel, new()    
         {
 
             var titles = new List<string>();
             var anchors = new List<string>();
-            var events = new List<Event>();
+            List<T> events = new List<T>();
             foreach (HtmlNode node in xpathEvents)
             {
-                Event ev = new Event();
+                T ev = new T();
                 List<Link> links = new List<Link>();
 
 
                 ev.Html = node.InnerHtml;
-                ev.Content = HttpUtility.HtmlDecode(node.InnerText).Split(" – ")[1];
-                ev.Year = HttpUtility.HtmlDecode(node.InnerText).Split("–")[0];
-                
+                try
+                {
+                    ev.Content = HttpUtility.HtmlDecode(node.InnerText).Split(" – ")[1];
+                    ev.Year = HttpUtility.HtmlDecode(node.InnerText).Split("–")[0];
+                }
+                catch(IndexOutOfRangeException)
+                {
+                    //on some pages the split separator is different for the last list item so we will ignore it for now
+                }
 
                 foreach (var nodeA in node.SelectNodes("/" + node.XPath + "/a[@href]"))
                     if (!nodeA.GetAttributeValue("href", string.Empty).Replace("/wiki/", "").All(Char.IsDigit))
@@ -52,5 +58,8 @@ namespace History.Api.Helper
             }
             return events;
         }
+
+
+     
     }
 }

@@ -32,7 +32,7 @@ namespace History.Api.Controllers
        public string Get()
         {
             
-
+            //MOVE THESE TO PAGE SCRAPER
             var url = "https://en.wikipedia.org/wiki/April_7";
             var web = new HtmlAgilityPack.HtmlWeb();
             var doc = web.Load(url);
@@ -42,47 +42,19 @@ namespace History.Api.Controllers
             var xpathBirths = doc.DocumentNode.SelectNodes("//div[@class='mw-parser-output']/ul[position() =2]/li");
 
             var xpathDeaths = doc.DocumentNode.SelectNodes("//div[@class='mw-parser-output']/ul[position() =3]/li");
-           
-            List<string> resultEvents = new List<string>();
-            List<string> resultDeaths = new List<string>();
-            List<string> resultBirths = new List<string>();
+           // MOVE THESE TO SEPARAte` coNTROLLERS
             List<Event> events = new List<Event>();
-            events = _scraper.GetEvents(xpathEvents);
-            foreach(var item in events)
-            {
-                System.Diagnostics.Debug.WriteLine(item.ToString());
-            }
-           
-            foreach (HtmlNode node in xpathDeaths)
-            {
-                
-                resultDeaths.Add(HttpUtility.HtmlDecode(node.InnerHtml));
-            }
-            foreach (HtmlNode node in xpathBirths)
-            {
-                resultBirths.Add(HttpUtility.HtmlDecode(node.InnerHtml));
-            }
-            //List<string[]> events = new List<string[]>();
-            List<string[]> deaths = new List<string[]>();
-            List<string[]> births = new List<string[]>();
-            
-            for (int i = 0; i < resultDeaths.Count; i++)
-            {
-                deaths.Add(resultDeaths[i].Split(" – "));
+            events = _scraper.GetData<Event>(xpathEvents);
 
-            }
-            for (int i = 0; i < resultBirths.Count; i++)
-            {
-                births.Add(resultBirths[i].Split(" – "));
+            List<Death> deaths = new List<Death>();
+            deaths = _scraper.GetData<Death>(xpathDeaths);
 
-            }
-            //foreach (var item in scrape)
-            //{
+            List<Birth> births = new List<Birth>();
+            births = _scraper.GetData<Birth>(xpathBirths);
 
-            //}
             JsonSerializerOptions jso = new JsonSerializerOptions();
             jso.Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
-            var json = JsonSerializer.Serialize(resultEvents, jso);
+            var json = JsonSerializer.Serialize(events, jso);
             return json;
         }
 

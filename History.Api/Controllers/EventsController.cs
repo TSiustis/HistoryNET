@@ -23,9 +23,9 @@ namespace History.Api.Controllers
 
         // GET: api/Events
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Event>>> GetEvent()
+        public  ActionResult<IEnumerable<Event>> GetEvent()
         {
-            return await _context.Event.ToListAsync();
+            return  Ok(_context.Event.ToList());
         }
 
         // GET: api/Events/5

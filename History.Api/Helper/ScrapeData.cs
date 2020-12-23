@@ -19,6 +19,8 @@ namespace History.Api.Helper
             PageScraper pageScraper = new PageScraper();
             var months  = CultureInfo.GetCultureInfo("en-us").DateTimeFormat.MonthNames;
             List<Event> events = new List<Event>();
+            List<Birth> births = new List<Birth>();
+            List<Death> deaths = new List<Death>();
             var watch = System.Diagnostics.Stopwatch.StartNew();
            
             if (!_historyDbContext.Event.Any())
@@ -30,12 +32,46 @@ namespace History.Api.Helper
                         events = pageScraper.GetData<Event>(months[i] + "_" + j.ToString());
                         _historyDbContext.AddRange(events);
 
-                        _historyDbContext.SaveChanges();
                     }
+
+
                 }
+
+                _historyDbContext.SaveChanges();
+            }
+            if (!_historyDbContext.Birth.Any())
+            {
+                for (int i = 0; i < 12; i++)
+                {
+                    for (int j = 1; j < DateTime.DaysInMonth(DateTime.Now.Year, i + 1); j++)
+                    {
+                        births = pageScraper.GetData<Birth>(months[i] + "_" + j.ToString());
+                        _historyDbContext.AddRange(births);
+
+                    }
+
+                }
+
+                _historyDbContext.SaveChanges();
             }
 
-            // the code that you want to measure comes here
+            if (!_historyDbContext.Death.Any())
+            {
+                for (int i = 0; i < 12; i++)
+                {
+                    for (int j = 1; j < DateTime.DaysInMonth(DateTime.Now.Year, i + 1); j++)
+                    {
+                        deaths = pageScraper.GetData<Death>(months[i] + "_" + j.ToString());
+                        _historyDbContext.AddRange(deaths);
+
+                    }
+
+                }
+
+                _historyDbContext.SaveChanges();
+            }
+
+            // measuring the time it takes to scrape for fun
             watch.Stop();
             var elapsedMs = watch.ElapsedMilliseconds;
             System.Diagnostics.Trace.WriteLine("ScrapeData took" + elapsedMs.ToString() + " ms");

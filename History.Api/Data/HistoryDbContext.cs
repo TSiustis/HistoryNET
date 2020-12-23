@@ -11,7 +11,7 @@ namespace History.Api.Data
     {
         public HistoryDbContext(DbContextOptions options) : base(options)
         {
-
+            Database.SetCommandTimeout(Int32.MaxValue);
         }
         public DbSet<Event> Event { get; set; }
         public DbSet<Death> Death { get; set; }

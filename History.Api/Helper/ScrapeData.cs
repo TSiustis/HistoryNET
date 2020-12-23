@@ -20,6 +20,7 @@ namespace History.Api.Helper
             var months  = CultureInfo.GetCultureInfo("en-us").DateTimeFormat.MonthNames;
             List<Event> events = new List<Event>();
             var watch = System.Diagnostics.Stopwatch.StartNew();
+           
             if (!_historyDbContext.Event.Any())
             {
                 for(int i = 0;i < 12; i++)
@@ -27,16 +28,17 @@ namespace History.Api.Helper
                     for (int j = 1; j < DateTime.DaysInMonth(DateTime.Now.Year, i + 1);j++)
                     {
                         events = pageScraper.GetData<Event>(months[i] + "_" + j.ToString());
-                        _historyDbContext.Event.AddRange(events);
+                        _historyDbContext.AddRange(events);
+
+                        _historyDbContext.SaveChanges();
                     }
                 }
             }
-            _historyDbContext.SaveChanges();
 
             // the code that you want to measure comes here
             watch.Stop();
             var elapsedMs = watch.ElapsedMilliseconds;
-            System.Diagnostics.Debug.WriteLine("ScrapeData took" + elapsedMs.ToString() + " ms");
+            System.Diagnostics.Trace.WriteLine("ScrapeData took" + elapsedMs.ToString() + " ms");
         }
     }
 }

@@ -13,7 +13,7 @@ namespace History.Shared.Models
         public string Year { get; set; }
         public string Html { get; set; }
         public string Content { get; set; }
-        public List<Link> Link { get; set; }
+        public virtual List<Link> Link { get; set; }
 
         public override string ToString()
         {

@@ -22,24 +22,48 @@ namespace History.Api.Controllers
         }
 
         // GET: api/Events
-        [HttpGet]
-        public  ActionResult<IEnumerable<Event>> GetEvent()
+
+        [HttpGet("GetAllEventsForDay", Name = nameof(GetAllEventsForDay))]
+        public  ActionResult GetAllEventsForDay(string Day)
         {
-            return  Ok(_context.Event.ToList());
+            if (_context.Event.Where(e => e.Day.Equals(Day)) == null)
+                return NotFound();
+            return Ok(_context.Event.Where(e => e.Day.Equals(Day)).Include(e=>e.Link));
+        }
+        [HttpGet("GetAllEventsForYear", Name = nameof(GetAllEventsForYear))]
+        public ActionResult GetAllEventsForYear(string Year)
+        {
+            if (_context.Event.Where(e => e.Year.Equals(Year)) == null)
+                return NotFound();
+            return Ok(_context.Event.Where(e => e.Year.Equals(Year)).Include(e => e.Link));
+        }
+
+        [HttpGet("GetAllEventsForDayAndYear", Name = nameof(GetAllEventsForDayAndYear))]
+        public ActionResult GetAllEventsForDayAndYear(string Year,string Day)
+        {
+            if (_context.Event.Where(e => e.Year.Equals(Year) || e.Day.Equals(Day)) == null)
+                return NotFound();
+            return Ok(_context.Event.Where(e => e.Year.Equals(Year) && e.Day.Equals(Day)).Include(e => e.Link));
+        }
+        [HttpOptions]
+        public IActionResult GetEventOptions()
+        {
+            Response.Headers.Add("Allow", "GET");
+            return Ok();
         }
 
         // GET: api/Events/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Event>> GetEvent(int id)
+        public IActionResult GetEventById(int id)
         {
-            var @event = await _context.Event.FindAsync(id);
+            var @event =  _context.Event.Find(id);
 
             if (@event == null)
             {
                 return NotFound();
             }
 
-            return @event;
+            return Ok(@event);
         }
 
         // PUT: api/Events/5
@@ -48,28 +72,7 @@ namespace History.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutEvent(int id, Event @event)
         {
-            if (id != @event.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(@event).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EventExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+          
 
             return NoContent();
         }
@@ -80,10 +83,7 @@ namespace History.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<Event>> PostEvent(Event @event)
         {
-            _context.Event.Add(@event);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetEvent", new { id = @event.Id }, @event);
+            return NotFound();
         }
 
         // DELETE: api/Events/5

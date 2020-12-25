@@ -42,7 +42,7 @@ namespace History.Api.Services
         }
         public T GetById(int id)
         {
-            return dbSet.Where(e => e.Id == id).FirstOrDefault();
+            return dbSet.Where(e => e.Id == id).Include(e=>e.Link).Single();
         } 
 
         public void Insert(T entity)
@@ -61,6 +61,10 @@ namespace History.Api.Services
                 dbSet.Attach(entityToDelete);
             }
             dbSet.Remove(entityToDelete);
+        }
+        public bool Exists(int id)
+        {
+            return dbSet.Any(e => e.Id == id);
         }
 
     }

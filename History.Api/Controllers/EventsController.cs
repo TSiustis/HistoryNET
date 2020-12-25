@@ -92,9 +92,6 @@ namespace History.Api.Controllers
            
         }
 
-        private bool EventExists(int id)
-        {
-            return _context.Event.Any(e => e.Id == id);
-        }
+       
     }
 }

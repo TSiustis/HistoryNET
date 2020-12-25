@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using History.Api.Data;
 using History.Shared.Models;
+using History.Api.Services;
 
 namespace History.Api.Controllers
 {
@@ -15,91 +16,80 @@ namespace History.Api.Controllers
     public class DeathsController : ControllerBase
     {
         private readonly HistoryDbContext _context;
-
+        private readonly UnitOfWork unitOfWork;
         public DeathsController(HistoryDbContext context)
         {
             _context = context;
+            unitOfWork = new UnitOfWork(_context);
         }
 
-        // GET: api/Deaths
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Death>>> GetDeath()
+        [HttpGet("GetAllDeathsForDay", Name = nameof(GetAllDeathsForDay))]
+        public ActionResult GetAllDeathsForDay(string Day)
         {
-            return await _context.Death.ToListAsync();
+            var Deaths = unitOfWork.DeathRepository.GetAllForDay(Day);
+            if (Deaths == null)
+                return NotFound();
+            return Ok(Deaths);
+        }
+        [HttpGet("GetAllDeathsForYear", Name = nameof(GetAllDeathsForYear))]
+        public ActionResult GetAllDeathsForYear(string Year)
+        {
+            var Deaths = unitOfWork.DeathRepository.GetAllForYear(Year);
+            if (Deaths == null)
+                return NotFound();
+            return Ok(Deaths);
+        }
+
+        [HttpGet("GetAllDeathsForDayAndYear", Name = nameof(GetAllDeathsForDayAndYear))]
+        public ActionResult GetAllDeathsForDayAndYear(string Year, string Day)
+        {
+            var Deaths = unitOfWork.DeathRepository.GetAllForDayAndYear(Year, Day);
+            if (Deaths == null)
+                return NotFound();
+            return Ok(Deaths);
+        }
+        [HttpOptions]
+        public IActionResult GetDeathOptions()
+        {
+            Response.Headers.Add("Allow", "GET");
+            return Ok();
         }
 
         // GET: api/Deaths/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Death>> GetDeath(int id)
+        public IActionResult GetDeathById(int id)
         {
-            var death = await _context.Death.FindAsync(id);
+            var Death = unitOfWork.DeathRepository.GetById(id);
 
-            if (death == null)
+            if (Death == null)
             {
                 return NotFound();
             }
 
-            return death;
+            return Ok(Death);
         }
 
-        // PUT: api/Deaths/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDeath(int id, Death death)
+        public IActionResult PutDeath(int id, Death @Death)
         {
-            if (id != death.Id)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(death).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DeathExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
 
             return NoContent();
         }
 
-        // POST: api/Deaths
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Death>> PostDeath(Death death)
+        public  ActionResult PostDeath(Death @Death)
         {
-            _context.Death.Add(death);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetDeath", new { id = death.Id }, death);
+            return NotFound();
         }
 
         // DELETE: api/Deaths/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Death>> DeleteDeath(int id)
+        public IActionResult DeleteDeath(Death ev)
         {
-            var death = await _context.Death.FindAsync(id);
-            if (death == null)
-            {
-                return NotFound();
-            }
+            unitOfWork.DeathRepository.Delete(ev);
+            return Ok();
 
-            _context.Death.Remove(death);
-            await _context.SaveChangesAsync();
-
-            return death;
         }
 
         private bool DeathExists(int id)

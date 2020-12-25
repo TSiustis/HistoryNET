@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using History.Api.Data;
 using History.Shared.Models;
+using History.Api.Services;
 
 namespace History.Api.Controllers
 {
@@ -15,91 +16,79 @@ namespace History.Api.Controllers
     public class BirthsController : ControllerBase
     {
         private readonly HistoryDbContext _context;
-
+        private readonly UnitOfWork unitOfWork;
         public BirthsController(HistoryDbContext context)
         {
             _context = context;
+            unitOfWork = new UnitOfWork(_context);
         }
 
-        // GET: api/Births
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Birth>>> GetBirth()
+        [HttpGet("GetAllBirthsForDay", Name = nameof(GetAllBirthsForDay))]
+        public ActionResult GetAllBirthsForDay(string Day)
         {
-            return await _context.Birth.ToListAsync();
+            var Births = unitOfWork.BirthRepository.GetAllForDay(Day);
+            if (Births == null)
+                return NotFound();
+            return Ok(Births);
+        }
+        [HttpGet("GetAllBirthsForYear", Name = nameof(GetAllBirthsForYear))]
+        public ActionResult GetAllBirthsForYear(string Year)
+        {
+            var Births = unitOfWork.BirthRepository.GetAllForYear(Year);
+            if (Births == null)
+                return NotFound();
+            return Ok(Births);
+        }
+
+        [HttpGet("GetAllBirthsForDayAndYear", Name = nameof(GetAllBirthsForDayAndYear))]
+        public ActionResult GetAllBirthsForDayAndYear(string Year, string Day)
+        {
+            var Births = unitOfWork.BirthRepository.GetAllForDayAndYear(Year, Day);
+            if (Births == null)
+                return NotFound();
+            return Ok(Births);
+        }
+        [HttpOptions]
+        public IActionResult GetBirthOptions()
+        {
+            Response.Headers.Add("Allow", "GET");
+            return Ok();
         }
 
         // GET: api/Births/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Birth>> GetBirth(int id)
+        public IActionResult GetBirthById(int id)
         {
-            var birth = await _context.Birth.FindAsync(id);
+            var Birth = unitOfWork.BirthRepository.GetById(id);
 
-            if (birth == null)
+            if (Birth == null)
             {
                 return NotFound();
             }
 
-            return birth;
+            return Ok(Birth);
         }
 
-        // PUT: api/Births/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBirth(int id, Birth birth)
+        public IActionResult PutBirth(int id, Birth @Birth)
         {
-            if (id != birth.Id)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(birth).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BirthExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
 
             return NoContent();
         }
 
-        // POST: api/Births
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Birth>> PostBirth(Birth birth)
+        public ActionResult PostBirth(Birth @Birth)
         {
-            _context.Birth.Add(birth);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetBirth", new { id = birth.Id }, birth);
+            return NotFound();
         }
 
-        // DELETE: api/Births/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Birth>> DeleteBirth(int id)
+        public IActionResult DeleteBirth(Birth ev)
         {
-            var birth = await _context.Birth.FindAsync(id);
-            if (birth == null)
-            {
-                return NotFound();
-            }
+            unitOfWork.BirthRepository.Delete(ev);
+            return Ok();
 
-            _context.Birth.Remove(birth);
-            await _context.SaveChangesAsync();
-
-            return birth;
         }
 
         private bool BirthExists(int id)

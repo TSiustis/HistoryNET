@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using History.Api.Data;
 using History.Shared.Models;
+using History.Api.Services;
 
 namespace History.Api.Controllers
 {
@@ -15,35 +16,37 @@ namespace History.Api.Controllers
     public class EventsController : ControllerBase
     {
         private readonly HistoryDbContext _context;
-
+        private readonly UnitOfWork unitOfWork;
         public EventsController(HistoryDbContext context)
         {
             _context = context;
+            unitOfWork = new UnitOfWork(_context);
         }
-
-        // GET: api/Events
 
         [HttpGet("GetAllEventsForDay", Name = nameof(GetAllEventsForDay))]
         public  ActionResult GetAllEventsForDay(string Day)
         {
-            if (_context.Event.Where(e => e.Day.Equals(Day)) == null)
+            var events = unitOfWork.EventRepository.GetAllForDay(Day);
+            if (events== null)
                 return NotFound();
-            return Ok(_context.Event.Where(e => e.Day.Equals(Day)).Include(e=>e.Link));
+            return Ok(events);
         }
         [HttpGet("GetAllEventsForYear", Name = nameof(GetAllEventsForYear))]
         public ActionResult GetAllEventsForYear(string Year)
         {
-            if (_context.Event.Where(e => e.Year.Equals(Year)) == null)
+            var events = unitOfWork.EventRepository.GetAllForYear(Year);
+            if (events == null)
                 return NotFound();
-            return Ok(_context.Event.Where(e => e.Year.Equals(Year)).Include(e => e.Link));
+            return Ok(events);
         }
 
         [HttpGet("GetAllEventsForDayAndYear", Name = nameof(GetAllEventsForDayAndYear))]
         public ActionResult GetAllEventsForDayAndYear(string Year,string Day)
         {
-            if (_context.Event.Where(e => e.Year.Equals(Year) || e.Day.Equals(Day)) == null)
+            var events = unitOfWork.EventRepository.GetAllForDayAndYear(Year,Day);
+            if (events == null)
                 return NotFound();
-            return Ok(_context.Event.Where(e => e.Year.Equals(Year) && e.Day.Equals(Day)).Include(e => e.Link));
+            return Ok(events);
         }
         [HttpOptions]
         public IActionResult GetEventOptions()
@@ -56,7 +59,7 @@ namespace History.Api.Controllers
         [HttpGet("{id}")]
         public IActionResult GetEventById(int id)
         {
-            var @event =  _context.Event.Find(id);
+            var @event = unitOfWork.EventRepository.GetById(id);
 
             if (@event == null)
             {
@@ -65,41 +68,28 @@ namespace History.Api.Controllers
 
             return Ok(@event);
         }
-
-        // PUT: api/Events/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEvent(int id, Event @event)
+        public IActionResult PutEvent(int id, Event @event)
         {
           
 
             return NoContent();
         }
 
-        // POST: api/Events
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Event>> PostEvent(Event @event)
+        public ActionResult PostEvent(Event @event)
         {
             return NotFound();
         }
 
         // DELETE: api/Events/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Event>> DeleteEvent(int id)
+        public IActionResult DeleteEvent(Event ev)
         {
-            var @event = await _context.Event.FindAsync(id);
-            if (@event == null)
-            {
-                return NotFound();
-            }
-
-            _context.Event.Remove(@event);
-            await _context.SaveChangesAsync();
-
-            return @event;
+             unitOfWork.EventRepository.Delete(ev);
+            return Ok();
+           
         }
 
         private bool EventExists(int id)

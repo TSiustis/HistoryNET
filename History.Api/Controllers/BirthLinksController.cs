@@ -24,7 +24,16 @@ namespace History.Api.Controllers
         }
 
 
-        // GET: api/Births/{BirthId}/BirthLinks
+        /// <summary>
+        /// Returns all html links specified   from a 'Birth' article
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// /api/Births/{birthId}/Links
+        /// </remarks>
+        /// <returns>All the links from a 'Birth' article</returns>
+        /// <response code="200">Returns the links from the given article</response>
+        /// <response code ="404">If the article is null</response>
         [HttpGet]
         public ActionResult<IEnumerable<Link>> GetLink(int BirthId)
         {
@@ -36,7 +45,16 @@ namespace History.Api.Controllers
             return Ok(links);
         }
 
-        // GET: api/Births/{BirthId}/BirthLinks/5
+        /// <summary>
+        /// Returns the html link specified  by an id from a 'Birth' article
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// /api/Births/{birthId}/Links/{id}
+        /// </remarks>
+        /// <returns>All the links from an 'Birth' article</returns>
+        /// <response code="200">Returns the links from the given article</response>
+        /// <response code ="404">If the article is null</response>
         [HttpGet("{id}")]
         public ActionResult<Link> GetLinkForBirth(int BirthId, int id)
         {

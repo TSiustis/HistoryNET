@@ -22,7 +22,17 @@ namespace History.Api.Controllers
             _context = context;
             unitOfWork = new UnitOfWork(_context);
         }
-
+        /// <summary>
+        /// Returns all deaths for a day
+        /// </summary>
+        ///  <remarks>
+        /// Sample request:
+        /// /api/Events/GetAllDeathsFor?Day=August_1
+        /// </remarks>
+        /// <param name="Day"></param>
+        /// <returns>Returns notable deaths for a given dayt</returns>
+        /// <response code="200">Returns notable deaths for a given day</response>
+        /// <response code ="404">If the deaths' page is null</response>
         [HttpGet("GetAllDeathsForDay", Name = nameof(GetAllDeathsForDay))]
         public ActionResult GetAllDeathsForDay(string Day)
         {
@@ -31,6 +41,17 @@ namespace History.Api.Controllers
                 return NotFound();
             return Ok(Deaths);
         }
+        /// <summary>
+        /// Returns all deaths for a year
+        /// </summary>
+        ///  <remarks>
+        /// Sample request:
+        /// /api/Events/GetAllDeathsForYear?Year=1995
+        /// </remarks>
+        /// <param name="Year"></param>
+        /// <returns>The deaths for a year</returns>
+        /// <response code="200">Returns notable deaths for a given year</response>
+        /// <response code ="404">If the deaths page is null</response>
         [HttpGet("GetAllDeathsForYear", Name = nameof(GetAllDeathsForYear))]
         public ActionResult GetAllDeathsForYear(string Year)
         {
@@ -39,7 +60,17 @@ namespace History.Api.Controllers
                 return NotFound();
             return Ok(Deaths);
         }
-
+        /// <summary>
+        /// Returns all deaths for a day and year
+        /// </summary>
+        ///  <remarks>
+        /// Sample request:
+        /// /api/Events/GetAllDeathsFor?Day=August_1&Year=2007
+        /// </remarks>
+        /// <param name="Day"></param>
+        /// <returns>Returns notable deaths for a given day and year</returns>
+        /// <response code="200">Returns notable deaths for a given day and year</response>
+        /// <response code ="404">If the deaths' page is null</response>
         [HttpGet("GetAllDeathsForDayAndYear", Name = nameof(GetAllDeathsForDayAndYear))]
         public ActionResult GetAllDeathsForDayAndYear(string Year, string Day)
         {

@@ -1,4 +1,7 @@
 using System;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,7 +34,30 @@ namespace History.Api
             services.AddControllers();
             services.AddDbContext<HistoryDbContext>(options => options.UseSqlServer
                                                       (Configuration.GetConnectionString("HistoryDbContext")));
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "History API",
+                    Description = "A  ASP.NET Core Web API for retrieving information about events/deaths/births " +
+                                  "that on a certain day or year (or day and year) from Wikipedia",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Teodor Siustis",
+                        Email = "siustis.teodor@gmail.com",
+                        Url = new Uri("https://www.linkedin.com/in/teodor-siustis/"),
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "Use under the MIT LICENSE",
+                        Url = new Uri("https://opensource.org/licenses/MIT"),
+                    }
+                });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +75,7 @@ namespace History.Api
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 c.RoutePrefix = string.Empty;
             });
+
             app.UseRouting();
 
             app.UseAuthorization();

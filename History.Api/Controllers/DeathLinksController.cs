@@ -23,8 +23,16 @@ namespace History.Api.Controllers
             unitOfWork = new UnitOfWork(_context);
         }
 
-
-        // GET: api/Deaths/{DeathId}/DeathLinks
+        /// <summary>
+        /// Returns all html links specified in a 'Death' article
+        /// </summary>
+        ///  <remarks>
+        /// Sample request:
+        /// /api/Deaths/{deathId}/Links
+        /// </remarks>
+        /// <returns>All the links from an 'Death' article</returns>
+        /// <response code="200">Returns the links from the given article</response>
+        /// <response code ="404">If the article is null</response>
         [HttpGet]
         public ActionResult<IEnumerable<Link>> GetLink(int DeathId)
         {
@@ -36,7 +44,16 @@ namespace History.Api.Controllers
             return Ok(links);
         }
 
-        // GET: api/Deaths/{DeathId}/DeathLinks/5
+        /// <summary>
+        /// Returns the html link specified  by an id from a 'Death' article
+        /// </summary>
+        ///  <remarks>
+        /// Sample request:
+        /// /api/Deaths/{deathId}/Links/{id}
+        /// </remarks>
+        /// <returns>All the links from an 'Death' article</returns>
+        /// <response code="200">Returns the links from the given article</response>
+        /// <response code ="404">If the article is null</response>
         [HttpGet("{id}")]
         public ActionResult<Link> GetLinkForDeath(int DeathId, int id)
         {

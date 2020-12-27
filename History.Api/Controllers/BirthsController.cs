@@ -23,10 +23,15 @@ namespace History.Api.Controllers
             unitOfWork = new UnitOfWork(_context);
         }
         /// <summary>
-        /// Example
+        /// Returns all births for a day
         /// </summary>
-        /// <param name="Day"></param>
-        /// <returns></returns>
+        ///  <remarks>
+        /// Sample request:
+        /// /api/Events/GetAllBirthFor?Day=August_1
+        /// </remarks>
+        /// <returns>Notable births for a day</returns>
+        /// <response code="200">Returns notable births for a given day</response>
+        /// <response code ="404">If the births' page is null</response>
         [HttpGet("GetAllBirthsForDay", Name = nameof(GetAllBirthsForDay))]
         public ActionResult GetAllBirthsForDay(string Day)
         {
@@ -35,6 +40,16 @@ namespace History.Api.Controllers
                 return NotFound();
             return Ok(Births);
         }
+        /// <summary>
+        /// Returns all births for a year
+        /// </summary>
+        ///  <remarks>
+        /// Sample request:
+        /// /api/Events/GetAllBirthFor?Year=1996
+        /// </remarks>
+        /// <returns>Notable births for a year</returns>
+        /// <response code="200">Returns notable births for a given year</response>
+        /// <response code ="404">If the births' page is null</response>
         [HttpGet("GetAllBirthsForYear", Name = nameof(GetAllBirthsForYear))]
         public ActionResult GetAllBirthsForYear(string Year)
         {
@@ -43,7 +58,16 @@ namespace History.Api.Controllers
                 return NotFound();
             return Ok(Births);
         }
-
+        /// <summary>
+        /// Returns all births for a day and year 
+        /// </summary>
+        ///  <remarks>
+        /// Sample request:
+        /// /api/Events/GetAllBirthFor?Day=August_1&Year=1992
+        /// </remarks>
+        /// <returns>Notable births for a day and year</returns>
+        /// <response code="200">Returns notable births for a given day and year</response>
+        /// <response code ="404">If the births' page is null</response>
         [HttpGet("GetAllBirthsForDayAndYear", Name = nameof(GetAllBirthsForDayAndYear))]
         public ActionResult GetAllBirthsForDayAndYear(string Year, string Day)
         {

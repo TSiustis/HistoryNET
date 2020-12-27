@@ -68,7 +68,7 @@ namespace History.Api.Controllers
 
             return Ok(Death);
         }
-
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpPut("{id}")]
         public IActionResult PutDeath(int id, Death @Death)
         {
@@ -76,7 +76,7 @@ namespace History.Api.Controllers
 
             return NoContent();
         }
-
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpPost]
         public  ActionResult PostDeath(Death @Death)
         {
@@ -84,6 +84,7 @@ namespace History.Api.Controllers
         }
 
         // DELETE: api/Deaths/5
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpDelete("{id}")]
         public IActionResult DeleteDeath(Death ev)
         {

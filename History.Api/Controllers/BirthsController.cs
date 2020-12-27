@@ -22,7 +22,11 @@ namespace History.Api.Controllers
             _context = context;
             unitOfWork = new UnitOfWork(_context);
         }
-
+        /// <summary>
+        /// Example
+        /// </summary>
+        /// <param name="Day"></param>
+        /// <returns></returns>
         [HttpGet("GetAllBirthsForDay", Name = nameof(GetAllBirthsForDay))]
         public ActionResult GetAllBirthsForDay(string Day)
         {
@@ -68,7 +72,7 @@ namespace History.Api.Controllers
 
             return Ok(Birth);
         }
-
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpPut("{id}")]
         public IActionResult PutBirth(int id, Birth @Birth)
         {
@@ -76,13 +80,14 @@ namespace History.Api.Controllers
 
             return NoContent();
         }
-
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpPost]
         public ActionResult PostBirth(Birth @Birth)
         {
             return NotFound();
         }
 
+        [ApiExplorerSettings(IgnoreApi =true)]
         [HttpDelete("{id}")]
         public IActionResult DeleteBirth(Birth ev)
         {

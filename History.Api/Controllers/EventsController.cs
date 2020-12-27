@@ -68,7 +68,7 @@ namespace History.Api.Controllers
 
             return Ok(@event);
         }
-        
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpPut("{id}")]
         public IActionResult PutEvent(int id, Event @event)
         {
@@ -76,7 +76,7 @@ namespace History.Api.Controllers
 
             return NoContent();
         }
-
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpPost]
         public ActionResult PostEvent(Event @event)
         {
@@ -84,6 +84,7 @@ namespace History.Api.Controllers
         }
 
         // DELETE: api/Events/5
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpDelete("{id}")]
         public IActionResult DeleteEvent(Event ev)
         {

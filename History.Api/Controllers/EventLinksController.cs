@@ -52,6 +52,7 @@ namespace History.Api.Controllers
             return Ok(link);
         }
         //Not supported for now
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutLink(int id, Link link)
         {
@@ -81,6 +82,7 @@ namespace History.Api.Controllers
             return NoContent();
         }
         //Not supported for now
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpPost]
         public async Task<ActionResult<Link>> PostLink(Link link)
         {
@@ -90,6 +92,7 @@ namespace History.Api.Controllers
             return CreatedAtAction("GetLink", new { id = link.Id }, link);
         }
         //Not supported for now
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Link>> DeleteLink(int id)
         {

@@ -9,6 +9,9 @@ namespace History.Api.Data
 {
     public class HistoryDbContext : DbContext
     {
+        public HistoryDbContext() 
+        {
+        }
         public HistoryDbContext(DbContextOptions options) : base(options)
         {
             Database.SetCommandTimeout(Int32.MaxValue);

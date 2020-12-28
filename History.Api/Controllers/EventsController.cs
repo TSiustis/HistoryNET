@@ -23,15 +23,15 @@ namespace History.Api.Controllers
             unitOfWork = new UnitOfWork(_context);
         }
         /// <summary>
-        /// Returns all html link specified by an id from  a event article
+        /// Returns all events that happened on the given day
         /// </summary>
         ///  <remarks>
         /// Sample request:
         /// /api/Events/GetAllEventsForDay?Day=August_7
         /// </remarks>
-        /// <returns>The specific link from an event</returns>
-        /// <response code="200">Returns the link from the given event</response>
-        /// <response code ="404">If the event or link is null</response>
+        /// <returns>The events for a given day</returns>
+        /// <response code="200">Returns the events for a given day</response>
+        /// <response code ="404">If the event  is null</response>
         [HttpGet("GetAllEventsForDay", Name = nameof(GetAllEventsForDay))]
         public  ActionResult GetAllEventsForDay(string Day)
         {
@@ -41,15 +41,15 @@ namespace History.Api.Controllers
             return Ok(events);
         }
         /// <summary>
-        /// Returns all html link specified by an id from  a event article
+        /// Returns all events specified by a year
         /// </summary>
         ///  <remarks>
         /// Sample request:
         /// /api/Events/GetAllEventsForYear?Year=2007
         /// </remarks>
-        /// <returns>The specific link from an event</returns>
-        /// <response code="200">Returns the link from the given event</response>
-        /// <response code ="404">If the event or link is null</response>
+        /// <returns>The events for the given year</returns>
+        /// <response code="200">Returns the events from the given year</response>
+        /// <response code ="404">If the event  is null</response>
         [HttpGet("GetAllEventsForYear", Name = nameof(GetAllEventsForYear))]
         public ActionResult GetAllEventsForYear(string Year)
         {
@@ -66,9 +66,9 @@ namespace History.Api.Controllers
         /// Sample request:
         /// /api/Events/GetAllEventsForDayAndYear?Year=1995?Day=August_1
         /// </remarks>
-        /// <returns>The specific link from an event</returns>
-        /// <response code="200">Returns the link from the given event</response>
-        /// <response code ="404">If the event or link is null</response>
+        /// <returns>All events from a given day and year</returns>
+        /// <response code="200">Returns the events from the given day and year</response>
+        /// <response code ="404">If the event  does not exist in the database</response>
         [HttpGet("GetAllEventsForDayAndYear", Name = nameof(GetAllEventsForDayAndYear))]
         public ActionResult GetAllEventsForDayAndYear(string Year,string Day)
         {

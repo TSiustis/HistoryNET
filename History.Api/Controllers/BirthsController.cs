@@ -63,7 +63,7 @@ namespace History.Api.Controllers
         /// </summary>
         ///  <remarks>
         /// Sample request:
-        /// /api/Events/GetAllBirthFor?Day=August_1&Year=1992
+        /// /api/Events/GetAllBirthFor?Day=August_1?Year=1992
         /// </remarks>
         /// <returns>Notable births for a day and year</returns>
         /// <response code="200">Returns notable births for a given day and year</response>

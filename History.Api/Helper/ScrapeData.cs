@@ -29,7 +29,7 @@ namespace History.Api.Helper
                 {
                     for (int j = 1; j < DateTime.DaysInMonth(DateTime.Now.Year, i + 1);j++)
                     {
-                        events = pageScraper.GetData<Event>(months[i] + "_" + j.ToString());
+                        events = pageScraper.GetData<Event>(months[i] + "_" + j.ToString(),"1");
                         _historyDbContext.AddRange(events);
 
                     }
@@ -45,7 +45,7 @@ namespace History.Api.Helper
                 {
                     for (int j = 1; j < DateTime.DaysInMonth(DateTime.Now.Year, i + 1); j++)
                     {
-                        births = pageScraper.GetData<Birth>(months[i] + "_" + j.ToString());
+                        births = pageScraper.GetData<Birth>(months[i] + "_" + j.ToString(),"2");
                         _historyDbContext.AddRange(births);
 
                     }
@@ -61,7 +61,7 @@ namespace History.Api.Helper
                 {
                     for (int j = 1; j < DateTime.DaysInMonth(DateTime.Now.Year, i + 1); j++)
                     {
-                        deaths = pageScraper.GetData<Death>(months[i] + "_" + j.ToString());
+                        deaths = pageScraper.GetData<Death>(months[i] + "_" + j.ToString(),"3");
                         _historyDbContext.AddRange(deaths);
 
                     }

@@ -65,9 +65,10 @@ namespace History.Api.Controllers
         /// </summary>
         ///  <remarks>
         /// Sample request:
-        /// /api/Events/GetAllDeathsFor?Day=August_1&Year=2007
+        /// /api/Events/GetAllDeathsFor?Day=August_1?Year=2007
         /// </remarks>
         /// <param name="Day"></param>
+        /// <param name="Year"></param>
         /// <returns>Returns notable deaths for a given day and year</returns>
         /// <response code="200">Returns notable deaths for a given day and year</response>
         /// <response code ="404">If the deaths' page is null</response>

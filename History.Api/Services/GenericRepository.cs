@@ -42,7 +42,7 @@ namespace History.Api.Services
         }
         public T GetById(int id)
         {
-            return dbSet.Where(e => e.Id == id).Include(e=>e.Link).Single();
+            return dbSet.Where(e => e.Id == id).SingleOrDefault();
         } 
 
         public void Insert(T entity)

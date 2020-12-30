@@ -4,7 +4,7 @@ using System.Text;
 
 namespace History.Shared.Models
 {
-    public class Birth : BaseModel
+    public class Birth : TypeOfEvent
     {
     }
 }

@@ -92,7 +92,7 @@ namespace History.Api.Controllers
 
             if (@event == null)
             {
-                return NotFound();
+                return NotFound(id);
             }
 
             return Ok(@event);

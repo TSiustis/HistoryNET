@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace History.Api.Services
 {
-    public class GenericRepository<T> where T : BaseModel
+    public class GenericRepository<T> where T : TypeOfEvent
 
     {
         internal HistoryDbContext _context;
@@ -40,7 +40,7 @@ namespace History.Api.Services
         {
             return dbSet.Where(e => e.Id == modelId).FirstOrDefault().Link;
         }
-        public T GetById(int id)
+        public virtual T GetById(int id)
         {
             return dbSet.Where(e => e.Id == id).SingleOrDefault();
         } 

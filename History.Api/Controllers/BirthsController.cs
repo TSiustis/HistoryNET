@@ -98,7 +98,7 @@ namespace History.Api.Controllers
         }
         [ApiExplorerSettings(IgnoreApi = true)]
         [HttpPut("{id}")]
-        public IActionResult PutBirth(int id, Birth @Birth)
+        public IActionResult PutBirth(int id, Event @Birth)
         {
 
 
@@ -106,14 +106,14 @@ namespace History.Api.Controllers
         }
         [ApiExplorerSettings(IgnoreApi = true)]
         [HttpPost]
-        public ActionResult PostBirth(Birth @Birth)
+        public ActionResult PostBirth(Event @Birth)
         {
             return NotFound();
         }
 
         [ApiExplorerSettings(IgnoreApi =true)]
         [HttpDelete("{id}")]
-        public IActionResult DeleteBirth(Birth ev)
+        public IActionResult DeleteBirth(Event ev)
         {
             unitOfWork.BirthRepository.Delete(ev);
             return Ok();

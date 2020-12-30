@@ -40,8 +40,8 @@ namespace History.Api
                 {
                     Version = "v1",
                     Title = "History API",
-                    Description = "A  ASP.NET Core Web API for retrieving information about events/deaths/births " +
-                                  "that on a certain day or year (or day and year) from Wikipedia",
+                    Description = "ASP.NET Core Web API for retrieving information about events/deaths/births " +
+                                  "that happened on a certain day or year (or day and year) from Wikipedia",
                     Contact = new OpenApiContact
                     {
                         Name = "Teodor Siustis",

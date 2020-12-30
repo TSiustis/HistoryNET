@@ -10,7 +10,7 @@ namespace History.Api.Helper
 {
     public class PageScraper
     {
-        public List<T> GetData<T>(string Day,string position) where T: BaseModel, new()    
+        public List<T> GetData<T>(string Day,string position) where T: TypeOfEvent, new()    
         {
 
 

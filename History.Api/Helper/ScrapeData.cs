@@ -19,7 +19,7 @@ namespace History.Api.Helper
             PageScraper pageScraper = new PageScraper();
             var months  = CultureInfo.GetCultureInfo("en-us").DateTimeFormat.MonthNames;
             List<Event> events = new List<Event>();
-            List<Birth> births = new List<Birth>();
+            List<Event> births = new List<Event>();
             List<Death> deaths = new List<Death>();
             var watch = System.Diagnostics.Stopwatch.StartNew();
            
@@ -45,7 +45,7 @@ namespace History.Api.Helper
                 {
                     for (int j = 1; j < DateTime.DaysInMonth(DateTime.Now.Year, i + 1); j++)
                     {
-                        births = pageScraper.GetData<Birth>(months[i] + "_" + j.ToString(),"2");
+                        births = pageScraper.GetData<Event>(months[i] + "_" + j.ToString(),"2");
                         _historyDbContext.AddRange(births);
 
                     }

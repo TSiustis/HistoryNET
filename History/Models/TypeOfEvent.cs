@@ -5,7 +5,7 @@ using System.Text;
 
 namespace History.Shared.Models
 {
-    public abstract class BaseModel
+    public abstract class TypeOfEvent
     {
         [Key]
         public int Id { get; set; }

@@ -18,7 +18,7 @@ namespace History.Api.Data
         }
         public DbSet<Event> Event { get; set; }
         public DbSet<Death> Death { get; set; }
-        public DbSet<Birth> Birth { get; set; }
+        public DbSet<Event> Birth { get; set; }
         public DbSet<History.Shared.Models.Link> Link { get; set; }
     }
 }

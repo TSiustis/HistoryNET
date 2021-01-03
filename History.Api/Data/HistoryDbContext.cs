@@ -9,16 +9,16 @@ namespace History.Api.Data
 {
     public class HistoryDbContext : DbContext
     {
-        public HistoryDbContext() 
-        {
-        }
+        //public HistoryDbContext() 
+        //{
+        //}
         public HistoryDbContext(DbContextOptions options) : base(options)
         {
             Database.SetCommandTimeout(Int32.MaxValue);
         }
         public DbSet<Event> Event { get; set; }
         public DbSet<Death> Death { get; set; }
-        public DbSet<Event> Birth { get; set; }
-        public DbSet<History.Shared.Models.Link> Link { get; set; }
+        public DbSet<Birth> Birth { get; set; }
+        public DbSet<Link> Link { get; set; }
     }
 }

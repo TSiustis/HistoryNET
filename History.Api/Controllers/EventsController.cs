@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using History.Api.Data;
 using History.Shared.Models;
 using History.Api.Services;
+using Microsoft.AspNetCore.Cors;
 
 namespace History.Api.Controllers
 {
+    [EnableCors("MyPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class EventsController : ControllerBase

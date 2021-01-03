@@ -39,37 +39,37 @@ namespace History.Api.Helper
 
                 _historyDbContext.SaveChanges();
             }
-            if (!_historyDbContext.Birth.Any())
-            {
-                for (int i = 0; i < 12; i++)
-                {
-                    for (int j = 1; j < DateTime.DaysInMonth(DateTime.Now.Year, i + 1); j++)
-                    {
-                        births = pageScraper.GetData<Event>(months[i] + "_" + j.ToString(),"2");
-                        _historyDbContext.AddRange(births);
+            //if (!_historyDbContext.Birth.Any())
+            //{
+            //    for (int i = 0; i < 12; i++)
+            //    {
+            //        for (int j = 1; j < DateTime.DaysInMonth(DateTime.Now.Year, i + 1); j++)
+            //        {
+            //            births = pageScraper.GetData<Event>(months[i] + "_" + j.ToString(),"2");
+            //            _historyDbContext.AddRange(births);
 
-                    }
+            //        }
 
-                }
+            //    }
 
-                _historyDbContext.SaveChanges();
-            }
+            //    _historyDbContext.SaveChanges();
+            //}
 
-            if (!_historyDbContext.Death.Any())
-            {
-                for (int i = 0; i < 12; i++)
-                {
-                    for (int j = 1; j < DateTime.DaysInMonth(DateTime.Now.Year, i + 1); j++)
-                    {
-                        deaths = pageScraper.GetData<Death>(months[i] + "_" + j.ToString(),"3");
-                        _historyDbContext.AddRange(deaths);
+            //if (!_historyDbContext.Death.Any())
+            //{
+            //    for (int i = 0; i < 12; i++)
+            //    {
+            //        for (int j = 1; j < DateTime.DaysInMonth(DateTime.Now.Year, i + 1); j++)
+            //        {
+            //            deaths = pageScraper.GetData<Death>(months[i] + "_" + j.ToString(),"3");
+            //            _historyDbContext.AddRange(deaths);
 
-                    }
+            //        }
 
-                }
+            //    }
 
-                _historyDbContext.SaveChanges();
-            }
+            //    _historyDbContext.SaveChanges();
+            //}
 
             // measuring the time it takes to scrape for fun
             watch.Stop();

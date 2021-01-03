@@ -63,6 +63,7 @@ namespace History.Api.Helper
                     links.Add(link);
 
                 }
+                ev.Url = links[0].Url;
                 ev.Link = links;
                 ev.Day = Day;
                 events.Add(ev);

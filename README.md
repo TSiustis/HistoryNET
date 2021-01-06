@@ -1,6 +1,6 @@
 # HistoryNET
 
-##About 
+## About 
 
 This application scrapes data from Wikipedia regarding important events on a certain day, saves them into a database  and exposes them from API endpoints. 
 Information about the endpoints can be found in the swagger page.

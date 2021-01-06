@@ -15,7 +15,7 @@ export const getData = (url, props) => {
             dispatch(getDataSuccess(response.data));
         })
         .catch(error => {
-            dispatch(errorHandlerActions.handleHTTPError(error, props));
+        //    dispatch(errorHandlerActions.handleHTTPError(error, props));
         })
     }
 }

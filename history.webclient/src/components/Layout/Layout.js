@@ -1,19 +1,36 @@
 import React from 'react';
 import Navigation from '../Navigation/Navigation'
-import { Container, Row } from 'react-bootstrap';
-import {Col, Navbar, Nav, NavItem,NavDropdown} from 'react-bootstrap';
-import {NavLink} from 'react-router-dom';
-import {LinkContainer} from 'react-router-bootstrap';
+import { Container, Row,Col } from 'react-bootstrap';
 const layout = (props) => {
     return (
-        <Container>
-            <Row>
-                 <Navigation/>
+        <>
+        <Container fluid className = "vh-100" style = {{height: "100vw !important"}}>
+            
+            <Row fluid className = "w-100">
+                
+                 
+        <Navigation/>
             </Row>
-            <main>
-                {props.children}
-            </main>
+            <Row fluid className = "vh-100" style ={{height: "100vw !important"}}>
+            <Col md = {4} id = "sidebar" style ={{height: "100vw !important"}}>
+               <h2>What happened on this particular date?</h2>
+               <ul>
+                   <li><a href = "#about">About</a></li>
+                   <li><a href = "#example">API example</a></li>
+                   <li><a href = "#data">Data</a></li>
+                   <li><a href = "#license">License</a></li>
+               </ul>
+                </Col>
+                <Col md = {8} >
+                  
+                    <main>
+                        {props.children}
+                    </main>
+                </Col>
+
+                </Row>
         </Container>
+    </>
     )
 }
 

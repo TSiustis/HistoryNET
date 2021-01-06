@@ -1,13 +1,12 @@
 import React from 'react';
 import './Navigation.css';
-import {Col, Navbar, Nav, NavItem} from 'react-bootstrap';
+import {Col, Navbar, Nav} from 'react-bootstrap';
 import {NavLink} from 'react-router-dom';
 import {LinkContainer} from 'react-router-bootstrap';
 
 const navigation = (props) => {
         return (
-            <Col md={12} >
-                  <Navbar >
+                  <Navbar className = "nav-fill w-100" >
                         <Navbar.Brand >
                             <NavLink to={'/'} exact >History Today</NavLink></Navbar.Brand>
                         <Navbar.Collapse>
@@ -30,7 +29,6 @@ const navigation = (props) => {
                         </Nav>
                     </Navbar.Collapse>
         </Navbar>
-            </Col>
         )
     }
 

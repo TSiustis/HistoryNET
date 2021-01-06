@@ -1,20 +1,6 @@
 import React from 'react';
 import Aux from '../../../hoc/Auxiliary/Auxiliary';
-import Moment from 'react-moment';
-import {Button} from 'react-bootstrap';
 
-
-// const redirectToeventDetails = (id, history) =>{
-//     history.Push('/eventDetails/'  + id);
-// }
-
-// const redirectToUpdateevent = (id, history) =>{
-//     history.push('/updateevent/'  + id);
-// }
-
-// const redirectToDeleteevent = (id,history) =>{
-//     history.push('/deleteevent/' + id);
-// }
 String.prototype.replaceUnderscore=function() {
     var a = this.split("_");
     return a.join(" ");

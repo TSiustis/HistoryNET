@@ -50,8 +50,8 @@ namespace History.Api
                     },
                     License = new OpenApiLicense
                     {
-                        Name = "Use under the MIT LICENSE",
-                        Url = new Uri("https://opensource.org/licenses/MIT"),
+                        Name = "Use under the CC BY-SA 3.0 LICENSE",
+                        Url = new Uri("https://creativecommons.org/licenses/by-sa/3.0/us/"),
                     }
                 });
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -77,7 +77,7 @@ namespace History.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseDeveloperExceptionPage();
             app.UseHttpsRedirection();
             app.UseSwagger();
             app.UseSwaggerUI(c =>

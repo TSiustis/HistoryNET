@@ -27,7 +27,9 @@
 .App-link {
   color: #61dafb;
 }
-
+#sidebar h2{
+  color:#fff;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -35,4 +37,25 @@
   to {
     transform: rotate(360deg);
   }
+}
+li a {
+  color: #fff;
+  margin-top: 1em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 85%;
+}
+a {
+  text-decoration: none;
+}
+ul li{
+  list-style:none;
+}
+
+
+.container{
+  background : #fff;
+}
+#sidebar, nav {
+  background: rgb(35, 41, 46);
 }

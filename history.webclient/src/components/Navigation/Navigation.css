@@ -1,5 +1,9 @@
 div a.active, ul li.active{
     font-weight: bold!important;
     font-style: italic!important;
-    color: rgb(14, 9, 9)!important;
+    color: rgb(253, 242, 242)!important;
+}
+
+nav a  {
+    color:#fff !important;
 }

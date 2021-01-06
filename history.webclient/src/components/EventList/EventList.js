@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Table, Col, Row } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import Aux from '../../hoc/Auxiliary/Auxiliary';
 import Event from '../DataComponents/Event/Event';
 
@@ -31,7 +30,10 @@ class EventList extends Component {
         if (this.props.data && this.props.data.length > 0) {
             events = this.props.data.map((event) => {
                 return (
+                
+                 
                     <Event key={event.id} event={event} {...this.props} />
+                
                 )
             })
         }
@@ -44,6 +46,8 @@ class EventList extends Component {
                 <br />
                 <Row>
                     <Col md={12}>
+                        
+                    <span>Enter the day and month in the format 'month_day' (e.g. August_7):</span><br/>
                     <div class="input-group">
                      <input class = "form-control" placeholder="Enter day..." onChange={(e) => this.setState({ searchTerm: e.target.value })}/>
                      <div className="col-md-2">

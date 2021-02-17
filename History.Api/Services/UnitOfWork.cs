@@ -11,7 +11,7 @@ namespace History.Api.Services
     {
         public HistoryDbContext _context;
         public GenericRepository<Event> eventRepository;
-        public GenericRepository<Event> birthRepository;
+        public GenericRepository<Birth> birthRepository;
         public GenericRepository<Death> deathRepository;
         public UnitOfWork(HistoryDbContext context)
         {
@@ -30,14 +30,14 @@ namespace History.Api.Services
             }
         }
 
-        public GenericRepository<Event> BirthRepository
+        public GenericRepository<Birth> BirthRepository
         {
             get
             {
 
                 if (this.birthRepository == null)
                 {
-                    this.birthRepository = new GenericRepository<Event>(_context);
+                    this.birthRepository = new GenericRepository<Birth>(_context);
                 }
                 return birthRepository;
             }

@@ -9,12 +9,15 @@ namespace History.Api.Data
 {
     public class HistoryDbContext : DbContext
     {
-        //public HistoryDbContext() 
-        //{
-        //}
+        public HistoryDbContext()
+        {
+        }
         public HistoryDbContext(DbContextOptions options) : base(options)
         {
-            Database.SetCommandTimeout(Int32.MaxValue);
+            if (Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory")
+            {
+                Database.SetCommandTimeout(Int32.MaxValue);
+            }
         }
         public DbSet<Event> Event { get; set; }
         public DbSet<Death> Death { get; set; }

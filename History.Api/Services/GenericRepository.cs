@@ -13,6 +13,10 @@ namespace History.Api.Services
     {
         internal HistoryDbContext _context;
         internal DbSet<T> dbSet;
+        public GenericRepository()
+        {
+
+        }
         public GenericRepository(HistoryDbContext context)
         {
             _context = context;

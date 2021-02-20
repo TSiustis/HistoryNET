@@ -9,6 +9,8 @@ using History.Api.Data;
 using History.Shared.Models;
 using History.Api.Services;
 using Microsoft.AspNetCore.Cors;
+using History.Api.Helper;
+using Newtonsoft.Json;
 
 namespace History.Api.Controllers
 {
@@ -35,9 +37,19 @@ namespace History.Api.Controllers
         /// <response code="200">Returns the events for a given day</response>
         /// <response code ="404">If the event  is null</response>
         [HttpGet("GetAllEventsForDay", Name = nameof(GetAllEventsForDay))]
-        public  ActionResult GetAllEventsForDay(string Day)
+        public  ActionResult GetAllEventsForDay(string Day, [FromQuery] QueryParameters queryParameters)
         {
-            var events = unitOfWork.EventRepository.GetAllForDay(Day);
+            var events = unitOfWork.EventRepository.GetAllForDay(Day,queryParameters);
+            var metadata = new
+            {
+                events.TotalCount,
+                events.PageSize,
+                events.CurrentPage,
+                events.TotalPages,
+                events.HasNext,
+                events.HasPrevious
+            };
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
             if (events== null)
                 return NotFound();
             return Ok(events);
@@ -53,9 +65,20 @@ namespace History.Api.Controllers
         /// <response code="200">Returns the events from the given year</response>
         /// <response code ="404">If the event  is null</response>
         [HttpGet("GetAllEventsForYear", Name = nameof(GetAllEventsForYear))]
-        public ActionResult GetAllEventsForYear(string Year)
+        public ActionResult GetAllEventsForYear(string Year, [FromQuery] QueryParameters queryParameters)
         {
-            var events = unitOfWork.EventRepository.GetAllForYear(Year);
+            var events = unitOfWork.EventRepository.GetAllForYear(Year, queryParameters);
+            var metadata = new
+            {
+                events.TotalCount,
+                events.PageSize,
+                events.CurrentPage,
+                events.TotalPages,
+                events.HasNext,
+                events.HasPrevious
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
             if (events == null)
                 return NotFound();
             return Ok(events);
@@ -72,9 +95,20 @@ namespace History.Api.Controllers
         /// <response code="200">Returns the events from the given day and year</response>
         /// <response code ="404">If the event  does not exist in the database</response>
         [HttpGet("GetAllEventsForDayAndYear", Name = nameof(GetAllEventsForDayAndYear))]
-        public ActionResult GetAllEventsForDayAndYear(string Year,string Day)
+        public ActionResult GetAllEventsForDayAndYear(string Year,string Day, [FromQuery] QueryParameters queryParameters)
         {
-            var events = unitOfWork.EventRepository.GetAllForDayAndYear(Year,Day);
+            var events = unitOfWork.EventRepository.GetAllForDayAndYear(Year,Day,queryParameters);
+            var metadata = new
+            {
+                events.TotalCount,
+                events.PageSize,
+                events.CurrentPage,
+                events.TotalPages,
+                events.HasNext,
+                events.HasPrevious
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
             if (events == null)
                 return NotFound();
             return Ok(events);

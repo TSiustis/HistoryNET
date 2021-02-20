@@ -1,4 +1,5 @@
 ﻿using History.Api.Data;
+using History.Api.Helper;
 using History.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace History.Api.Services
 {
-    public class GenericRepository<T> where T : TypeOfEvent
+    public class GenericRepository<T> : IGenericRepository<T> where T : TypeOfEvent
 
     {
         internal HistoryDbContext _context;
@@ -24,20 +25,23 @@ namespace History.Api.Services
 
         }
 
-        public IEnumerable<T> GetAllForDay(string Day)
-        {
-           
-            return dbSet.Where(e => e.Day.Equals(Day)).Include(e => e.Link);
-        }
-        public IEnumerable<T> GetAllForYear(string Year)
+        public PagedList<T> GetAllForDay(string Day, QueryParameters queryParameters)
         {
 
-            return dbSet.Where(e => e.Year.Equals(Year)).Include(e => e.Link);
+            return PagedList<T>.ToPagedList(dbSet.Where(e => e.Day.Equals(Day)).Include(e => e.Link)
+                                            , queryParameters.PageNumber, queryParameters.PageSize);
         }
-        public IEnumerable<T> GetAllForDayAndYear(string Year,string Day)
+        public PagedList<T> GetAllForYear(string Year, QueryParameters queryParameters)
         {
 
-            return dbSet.Where(e => e.Day.Equals(Day) && e.Year.Equals(Year)).Include(e => e.Link);
+            return PagedList<T>.ToPagedList(dbSet.Where(e => e.Year.Equals(Year)).Include(e => e.Link)
+                                            , queryParameters.PageNumber, queryParameters.PageSize);
+        }
+        public PagedList<T> GetAllForDayAndYear(string Year, string Day, QueryParameters queryParameters)
+        {
+
+            return PagedList<T>.ToPagedList(dbSet.Where(e => e.Day.Equals(Day) && e.Year.Equals(Year)).Include(e => e.Link)
+                                        , queryParameters.PageNumber, queryParameters.PageSize);
         }
 
         public List<Link> GetLinksByModelId(int modelId)
@@ -47,7 +51,7 @@ namespace History.Api.Services
         public virtual T GetById(int id)
         {
             return dbSet.Where(e => e.Id == id).SingleOrDefault();
-        } 
+        }
 
         public void Insert(T entity)
         {
@@ -58,7 +62,7 @@ namespace History.Api.Services
             dbSet.Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
         }
-        public  void Delete(T entityToDelete)
+        public void Delete(T entityToDelete)
         {
             if (_context.Entry(entityToDelete).State == EntityState.Detached)
             {

@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using History.Api.Data;
 using History.Shared.Models;
 using History.Api.Services;
+using History.Api.Helper;
+using Newtonsoft.Json;
 
 namespace History.Api.Controllers
 {
@@ -34,9 +36,20 @@ namespace History.Api.Controllers
         /// <response code="200">Returns notable deaths for a given day</response>
         /// <response code ="404">If the deaths' page is null</response>
         [HttpGet("GetAllDeathsForDay", Name = nameof(GetAllDeathsForDay))]
-        public ActionResult GetAllDeathsForDay(string Day)
+        public ActionResult GetAllDeathsForDay(string Day,[FromQuery] QueryParameters queryParameters)
         {
-            var Deaths = unitOfWork.DeathRepository.GetAllForDay(Day);
+            var Deaths = unitOfWork.DeathRepository.GetAllForDay(Day,queryParameters);
+            var metadata = new
+            {
+                Deaths.TotalCount,
+                Deaths.PageSize,
+                Deaths.CurrentPage,
+                Deaths.TotalPages,
+                Deaths.HasNext,
+                Deaths.HasPrevious
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
             if (Deaths == null)
                 return NotFound();
             return Ok(Deaths);
@@ -53,9 +66,20 @@ namespace History.Api.Controllers
         /// <response code="200">Returns notable deaths for a given year</response>
         /// <response code ="404">If the deaths page is null</response>
         [HttpGet("GetAllDeathsForYear", Name = nameof(GetAllDeathsForYear))]
-        public ActionResult GetAllDeathsForYear(string Year)
+        public ActionResult GetAllDeathsForYear(string Year,[FromQuery] QueryParameters queryParameters)
         {
-            var Deaths = unitOfWork.DeathRepository.GetAllForYear(Year);
+            var Deaths = unitOfWork.DeathRepository.GetAllForYear(Year, queryParameters);
+            var metadata = new
+            {
+                Deaths.TotalCount,
+                Deaths.PageSize,
+                Deaths.CurrentPage,
+                Deaths.TotalPages,
+                Deaths.HasNext,
+                Deaths.HasPrevious
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
             if (Deaths == null)
                 return NotFound();
             return Ok(Deaths);
@@ -73,11 +97,24 @@ namespace History.Api.Controllers
         /// <response code="200">Returns notable deaths for a given day and year</response>
         /// <response code ="404">If the deaths' page is null</response>
         [HttpGet("GetAllDeathsForDayAndYear", Name = nameof(GetAllDeathsForDayAndYear))]
-        public ActionResult GetAllDeathsForDayAndYear(string Year, string Day)
+        public ActionResult GetAllDeathsForDayAndYear(string Year, string Day, [FromQuery]QueryParameters queryParameters)
         {
-            var Deaths = unitOfWork.DeathRepository.GetAllForDayAndYear(Year, Day);
+            var Deaths = unitOfWork.DeathRepository.GetAllForDayAndYear(Year, Day, queryParameters);
+
+
             if (Deaths == null)
                 return NotFound();
+            var metadata = new
+            {
+                Deaths.TotalCount,
+                Deaths.PageSize,
+                Deaths.CurrentPage,
+                Deaths.TotalPages,
+                Deaths.HasNext,
+                Deaths.HasPrevious
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
             return Ok(Deaths);
         }
         [HttpOptions]

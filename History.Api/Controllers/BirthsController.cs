@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using History.Api.Data;
 using History.Shared.Models;
 using History.Api.Services;
+using History.Api.Helper;
+using Newtonsoft.Json;
 
 namespace History.Api.Controllers
 {
@@ -33,9 +35,20 @@ namespace History.Api.Controllers
         /// <response code="200">Returns notable births for a given day</response>
         /// <response code ="404">If the births' page is null</response>
         [HttpGet("GetAllBirthsForDay", Name = nameof(GetAllBirthsForDay))]
-        public ActionResult GetAllBirthsForDay(string Day)
+        public ActionResult GetAllBirthsForDay(string Day, [FromQuery] QueryParameters queryParameters)
         {
-            var Births = unitOfWork.BirthRepository.GetAllForDay(Day);
+            var Births = unitOfWork.BirthRepository.GetAllForDay(Day,queryParameters);
+            var metadata = new
+            {
+                Births.TotalCount,
+                Births.PageSize,
+                Births.CurrentPage,
+                Births.TotalPages,
+                Births.HasNext,
+                Births.HasPrevious
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
             if (Births == null)
                 return NotFound();
             return Ok(Births);
@@ -51,9 +64,20 @@ namespace History.Api.Controllers
         /// <response code="200">Returns notable births for a given year</response>
         /// <response code ="404">If the births' page is null</response>
         [HttpGet("GetAllBirthsForYear", Name = nameof(GetAllBirthsForYear))]
-        public ActionResult GetAllBirthsForYear(string Year)
+        public ActionResult GetAllBirthsForYear(string Year, [FromQuery]QueryParameters queryParameters)
         {
-            var Births = unitOfWork.BirthRepository.GetAllForYear(Year);
+            var Births = unitOfWork.BirthRepository.GetAllForYear(Year, queryParameters);
+            var metadata = new
+            {
+                Births.TotalCount,
+                Births.PageSize,
+                Births.CurrentPage,
+                Births.TotalPages,
+                Births.HasNext,
+                Births.HasPrevious
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
             if (Births == null)
                 return NotFound();
             return Ok(Births);
@@ -69,9 +93,20 @@ namespace History.Api.Controllers
         /// <response code="200">Returns notable births for a given day and year</response>
         /// <response code ="404">If the births' page is null</response>
         [HttpGet("GetAllBirthsForDayAndYear", Name = nameof(GetAllBirthsForDayAndYear))]
-        public ActionResult GetAllBirthsForDayAndYear(string Year, string Day)
+        public ActionResult GetAllBirthsForDayAndYear(string Year, string Day, [FromQuery]QueryParameters queryParameters)
         {
-            var Births = unitOfWork.BirthRepository.GetAllForDayAndYear(Year, Day);
+            var Births = unitOfWork.BirthRepository.GetAllForDayAndYear(Year, Day,queryParameters);
+            var metadata = new
+            {
+                Births.TotalCount,
+                Births.PageSize,
+                Births.CurrentPage,
+                Births.TotalPages,
+                Births.HasNext,
+                Births.HasPrevious
+            };
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
             if (Births == null)
                 return NotFound();
             return Ok(Births);

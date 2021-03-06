@@ -24,8 +24,11 @@ namespace History.Api.Controllers
         private readonly IDataShaper<Event> _eventDataShaper;
         private readonly IDataShaper<Birth> _birthDataShaper;
         private readonly IDataShaper<Death> _deathDataShaper;
-        public DeathsController(HistoryDbContext context)
+        public DeathsController(HistoryDbContext context, IDataShaper<Event> eventDataShaper, IDataShaper<Birth> birthDataShaper, IDataShaper<Death> deathDataShaper)
         {
+            _eventDataShaper = eventDataShaper;
+            _birthDataShaper = birthDataShaper;
+            _deathDataShaper = deathDataShaper;
             _context = context;
             unitOfWork = new UnitOfWork(_context, _eventDataShaper, _birthDataShaper, _deathDataShaper);
         }

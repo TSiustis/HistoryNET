@@ -21,5 +21,6 @@ namespace History.Api.Helper
                 _pageSize = (value > maxPageSize) ? maxPageSize : value;
             }
         }
+        public string Fields { get; set; }
     }
 }

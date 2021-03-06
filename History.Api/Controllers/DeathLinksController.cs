@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using History.Api.Data;
 using History.Shared.Models;
 using History.Api.Services;
+using History.Api.Helper;
 
 namespace History.Api.Controllers
 {
@@ -17,10 +18,14 @@ namespace History.Api.Controllers
     {
         private readonly HistoryDbContext _context;
         private readonly UnitOfWork unitOfWork;
+
+        private readonly IDataShaper<Event> _eventDataShaper;
+        private readonly IDataShaper<Birth> _birthDataShaper;
+        private readonly IDataShaper<Death> _deathDataShaper;
         public DeathLinksController(HistoryDbContext context)
         {
             _context = context;
-            unitOfWork = new UnitOfWork(_context);
+            unitOfWork = new UnitOfWork(_context, _eventDataShaper,_birthDataShaper,_deathDataShaper);
         }
 
         /// <summary>

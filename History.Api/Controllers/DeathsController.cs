@@ -10,6 +10,7 @@ using History.Shared.Models;
 using History.Api.Services;
 using History.Api.Helper;
 using Newtonsoft.Json;
+using System.Dynamic;
 
 namespace History.Api.Controllers
 {
@@ -19,10 +20,14 @@ namespace History.Api.Controllers
     {
         private readonly HistoryDbContext _context;
         private readonly UnitOfWork unitOfWork;
+
+        private readonly IDataShaper<Event> _eventDataShaper;
+        private readonly IDataShaper<Birth> _birthDataShaper;
+        private readonly IDataShaper<Death> _deathDataShaper;
         public DeathsController(HistoryDbContext context)
         {
             _context = context;
-            unitOfWork = new UnitOfWork(_context);
+            unitOfWork = new UnitOfWork(_context, _eventDataShaper, _birthDataShaper, _deathDataShaper);
         }
         /// <summary>
         /// Returns all deaths for a day
@@ -126,11 +131,11 @@ namespace History.Api.Controllers
 
         // GET: api/Deaths/5
         [HttpGet("{id}")]
-        public IActionResult GetDeathById(int id)
+        public IActionResult GetDeathById(int id,string fields)
         {
-            var Death = unitOfWork.DeathRepository.GetById(id);
+            var Death = unitOfWork.DeathRepository.GetById(id,fields);
 
-            if (Death == null)
+            if (Death == default(ExpandoObject))
             {
                 return NotFound();
             }

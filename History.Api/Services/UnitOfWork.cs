@@ -1,4 +1,5 @@
 ﻿using History.Api.Data;
+using History.Api.Helper;
 using History.Shared.Models;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,16 @@ namespace History.Api.Services
         public GenericRepository<Event> eventRepository;
         public GenericRepository<Birth> birthRepository;
         public GenericRepository<Death> deathRepository;
-        public UnitOfWork(HistoryDbContext context)
+        private readonly IDataShaper<Event> _eventDataShaper;
+        private readonly IDataShaper<Birth> _birthDataShaper;
+        private readonly IDataShaper<Death> _deathDataShaper;
+        public UnitOfWork(HistoryDbContext context, IDataShaper<Event> eventDataShaper, IDataShaper<Birth> birthDataShaper
+                            , IDataShaper<Death> deathDataShaper)
         {
             _context = context;
+            _eventDataShaper = eventDataShaper;
+            _birthDataShaper = birthDataShaper;
+            _deathDataShaper = deathDataShaper;
         }
         public GenericRepository<Event> EventRepository
         {
@@ -24,7 +32,7 @@ namespace History.Api.Services
 
                 if (this.eventRepository == null)
                 {
-                    this.eventRepository = new GenericRepository<Event>(_context);
+                    this.eventRepository = new GenericRepository<Event>(_context,_eventDataShaper);
                 }
                 return eventRepository;
             }
@@ -37,7 +45,7 @@ namespace History.Api.Services
 
                 if (this.birthRepository == null)
                 {
-                    this.birthRepository = new GenericRepository<Birth>(_context);
+                    this.birthRepository = new GenericRepository<Birth>(_context,_birthDataShaper);
                 }
                 return birthRepository;
             }
@@ -50,7 +58,7 @@ namespace History.Api.Services
 
                 if (this.deathRepository == null)
                 {
-                    this.deathRepository = new GenericRepository<Death>(_context);
+                    this.deathRepository = new GenericRepository<Death>(_context,_deathDataShaper);
                 }
                 return deathRepository;
             }

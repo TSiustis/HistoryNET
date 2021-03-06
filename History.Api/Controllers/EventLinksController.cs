@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using History.Api.Data;
 using History.Shared.Models;
 using History.Api.Services;
+using History.Api.Helper;
 
 namespace History.Api.Controllers
 {
@@ -18,10 +19,17 @@ namespace History.Api.Controllers
     {
         private readonly HistoryDbContext _context;
         private readonly UnitOfWork unitOfWork;
-        public EventLinksController(HistoryDbContext context)
+
+        private readonly IDataShaper<Event> _eventDataShaper;
+        private readonly IDataShaper<Birth> _birthDataShaper;
+        private readonly IDataShaper<Death> _deathDataShaper;
+        public EventLinksController(HistoryDbContext context,IDataShaper<Event> eventDataShaper, IDataShaper<Birth> birthDataShaper, IDataShaper<Death> deathDataShaper)
         {
+            _eventDataShaper = eventDataShaper;
+            _birthDataShaper = birthDataShaper;
+            _deathDataShaper = deathDataShaper;
             _context = context;
-            unitOfWork = new UnitOfWork(_context);
+            unitOfWork = new UnitOfWork(_context,_eventDataShaper,_birthDataShaper,_deathDataShaper);
         }
 
 
@@ -77,7 +85,6 @@ namespace History.Api.Controllers
         //Not supported for now
         [ApiExplorerSettings(IgnoreApi = true)]
         [HttpPut("{id}")]
-        [HttpGet]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> PutLink(int id, Link link)
         {
@@ -109,7 +116,6 @@ namespace History.Api.Controllers
         //Not supported for now
         [ApiExplorerSettings(IgnoreApi = true)]
         [HttpPost]
-        [HttpGet]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Link>> PostLink(Link link)
         {

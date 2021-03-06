@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using History.Shared.Models;
 
 namespace History.Api
 {
@@ -31,9 +32,17 @@ namespace History.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddScoped<IDataShaper<Event>, DataShaper<Event>>();
+            services.AddScoped<IDataShaper<Birth>, DataShaper<Birth>>();
+            services.AddScoped<IDataShaper<Death>, DataShaper<Death>>();
+          
             services.AddDbContext<HistoryDbContext>(options => options.UseSqlServer
                                                       (Configuration.GetConnectionString("HistoryDbContext")));
+            services.AddControllers(config =>
+            {
+                config.RespectBrowserAcceptHeader = true;
+                config.ReturnHttpNotAcceptable = true;
+            }).AddNewtonsoftJson();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -68,6 +77,7 @@ namespace History.Api
                                 .AllowAnyMethod();
                     });
             });
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

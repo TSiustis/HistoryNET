@@ -15,7 +15,7 @@ namespace History.Tests
 {
     public class EventControllerTest
     {
-
+        
         [Fact]
         public void EventGetById_ReturnsHttpNotFound_ForInvalidId()
         {
@@ -27,7 +27,7 @@ namespace History.Tests
             var controller = new EventsController(_dbContext);
 
             // Act
-            var result =  controller.GetEventById(1);
+            var result =  controller.GetEventById(1,"");
             Assert.IsType<NotFoundObjectResult>(result);
           
         }

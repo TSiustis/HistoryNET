@@ -11,6 +11,7 @@ using History.Api.Services;
 using Microsoft.AspNetCore.Cors;
 using History.Api.Helper;
 using Newtonsoft.Json;
+using System.Dynamic;
 
 namespace History.Api.Controllers
 {
@@ -21,10 +22,18 @@ namespace History.Api.Controllers
     {
         private readonly HistoryDbContext _context;
         private readonly UnitOfWork unitOfWork;
-        public EventsController(HistoryDbContext context)
+
+        private readonly IDataShaper<Event> _eventDataShaper;
+        private readonly IDataShaper<Birth> _birthDataShaper;
+        private readonly IDataShaper<Death> _deathDataShaper;
+      
+        public EventsController(HistoryDbContext context, IDataShaper<Event> eventDataShaper, IDataShaper<Birth> birthDataShaper, IDataShaper<Death> deathDataShaper)
         {
+            _eventDataShaper = eventDataShaper;
+            _birthDataShaper = birthDataShaper;
+            _deathDataShaper = deathDataShaper;
             _context = context;
-            unitOfWork = new UnitOfWork(_context);
+            unitOfWork = new UnitOfWork(_context,_eventDataShaper,_birthDataShaper,_deathDataShaper);
         }
         /// <summary>
         /// Returns all events that happened on the given day
@@ -122,17 +131,18 @@ namespace History.Api.Controllers
 
         // GET: api/Events/5
         [HttpGet("{id}")]
-        public IActionResult GetEventById(int id)
+        public IActionResult GetEventById(int id, [FromQuery] string fields)
         {
-            var @event = unitOfWork.EventRepository.GetById(id);
+            var @event = unitOfWork.EventRepository.GetById(id, fields);
 
-            if (@event == null)
+            if (@event == default(ExpandoObject))
             {
                 return NotFound(id);
             }
 
             return Ok(@event);
         }
+       
         [ApiExplorerSettings(IgnoreApi = true)]
         [HttpPut("{id}")]
         public IActionResult PutEvent(int id, Event @event)

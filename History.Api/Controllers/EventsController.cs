@@ -26,7 +26,8 @@ namespace History.Api.Controllers
         private readonly IDataShaper<Event> _eventDataShaper;
         private readonly IDataShaper<Birth> _birthDataShaper;
         private readonly IDataShaper<Death> _deathDataShaper;
-      
+        private HistoryDbContext dbContext;
+
         public EventsController(HistoryDbContext context, IDataShaper<Event> eventDataShaper, IDataShaper<Birth> birthDataShaper, IDataShaper<Death> deathDataShaper)
         {
             _eventDataShaper = eventDataShaper;
@@ -35,6 +36,12 @@ namespace History.Api.Controllers
             _context = context;
             unitOfWork = new UnitOfWork(_context,_eventDataShaper,_birthDataShaper,_deathDataShaper);
         }
+
+        public EventsController(HistoryDbContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
+
         /// <summary>
         /// Returns all events that happened on the given day
         /// </summary>

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Table, Col, Row } from 'react-bootstrap';
 import Aux from '../../hoc/Auxiliary/Auxiliary';
-import Event from '../DataComponents/Event/Event';
+import Birth from '../DataComponents/Birth/Birth';
 
 import { connect } from 'react-redux';
 import * as repositoryActions from '../../store/actions/repositoryActions';
 
-class EventList extends Component {
+class BirthList extends Component {
 
     constructor(props) {
         super(props);    
@@ -15,24 +15,24 @@ class EventList extends Component {
         };
       }
     // componentDidMount = () => {
-    //     let url = 'https://localhost:44350/api/events/getalleventsforday?day=august_7';
+    //     let url = 'https://localhost:44350/api/Births/getallBirthsforday?day=august_7';
     //     this.props.onGetData(url, { ...this.props });
     // }
     search(){
         let {searchTerm } =this.state;
-        const url=`https://localhost:44350/api/events/getalleventsforday?day=${searchTerm}`;
+        const url=`https://localhost:44350/api/Births/getallBirthsforday?day=${searchTerm}`;
 
       
         this.props.onGetData(url, { ...this.props });
     }
     render() {
-        let events = [];
+        let Births = [];
         if (this.props.data && this.props.data.length > 0) {
-            events = this.props.data.map((event) => {
+            Births = this.props.data.map((Birth) => {
                 return (
                 
                  
-                    <Event key={event.id} event={event} {...this.props} />
+                    <Birth key={Birth.id} Birth={Birth} {...this.props} />
                 
                 )
             })
@@ -66,7 +66,7 @@ class EventList extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                {events}
+                                {Births}
                             </tbody>
                         </Table>
                        
@@ -89,4 +89,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EventList);
+export default connect(mapStateToProps, mapDispatchToProps)(BirthList);

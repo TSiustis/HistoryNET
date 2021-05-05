@@ -16,6 +16,8 @@ namespace History.Api.Services
         private readonly HistoryDbContext _context;
         private readonly DbSet<T> dbSet;
         private readonly IDataShaper<T> _dataShaper;
+        private HistoryDbContext @object;
+
         public GenericRepository()
         {
 
@@ -27,6 +29,11 @@ namespace History.Api.Services
             dbSet = _context.Set<T>();
             _dataShaper = dataShaper;
 
+        }
+
+        public GenericRepository(HistoryDbContext @object)
+        {
+            this.@object = @object;
         }
 
         public PagedList<ExpandoObject> GetAllForDay(string Day, QueryParameters queryParameters)

@@ -5,16 +5,11 @@ const layout = (props) => {
     console.log(props.location)
     return (
         <>
-        <Container fluid className = "vh-100" style = {{height: "100vw !important"}}>
-            
-            <Row fluid className = "w-100">
-                
-                 
         <Navigation/>
-            </Row>
+           
             <Row fluid className = "vh-100" style ={{height: "100vw !important"}}>
             <Col md = {4} id = "sidebar" style ={{height: "100vw !important"}}>
-               <h2>What happened on this particular date?</h2>
+               <h2 style ={{marginLeft:15}}>What happened on this particular date?</h2>
                <ul>
                    <li><a href = "/#about">About</a></li>
                    <li><a href = "/#example">API example</a></li>
@@ -30,7 +25,7 @@ const layout = (props) => {
                 </Col>
 
                 </Row>
-        </Container>
+        
     </>
     )
 }

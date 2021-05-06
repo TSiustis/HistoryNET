@@ -10,7 +10,6 @@ String.prototype.replaceUnderscore=function() {
         
 const birth = (props) => {
     
-const url=`https://localhost:44350/api/births/${props.birth.id}/birthlinks`;
     return (
 
         <Aux>

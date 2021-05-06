@@ -14,10 +14,7 @@ class EventList extends Component {
           searchTerm:  '',
         };
       }
-    // componentDidMount = () => {
-    //     let url = 'https://localhost:44350/api/events/getalleventsforday?day=august_7';
-    //     this.props.onGetData(url, { ...this.props });
-    // }
+
     search(){
         let {searchTerm } =this.state;
         const url=`https://localhost:44350/api/events/getalleventsforday?day=${searchTerm}`;

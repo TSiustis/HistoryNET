@@ -10,7 +10,6 @@ String.prototype.replaceUnderscore=function() {
         
 const death = (props) => {
     
-const url=`https://localhost:44350/api/deaths/${props.death.id}/deathlinks`;
     return (
 
         <Aux>
